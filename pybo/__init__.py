@@ -1,6 +1,23 @@
 from flask import Flask
-app = Flask(__name__)
+from flask_migrate import flask_migrate
+from flask_sqlalchemy import SQLALCHEMY_DATABASE_URI
 
-@app.route('/')
-def hello_pybo():
-    return 'Hello, Pybo 좋아 지금부터야 !!!'
+import config
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+
+    # ORM
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    # 블루프린트
+    from .views import main_views
+    app.register_blueprint(main_views.bp)
+
+    return app
