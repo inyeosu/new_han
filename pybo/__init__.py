@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_migrate import flask_migrate
-from flask_sqlalchemy import SQLALCHEMY_DATABASE_URI
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 import config
 
@@ -15,6 +15,7 @@ def create_app():
     # ORM
     db.init_app(app)
     migrate.init_app(app, db)
+    from . import models
 
     # 블루프린트
     from .views import main_views
