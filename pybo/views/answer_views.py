@@ -23,15 +23,16 @@ def create(question_id):
 
         question.answer_set.append(answer)
         db.session.commit()
-        return redirect(url_for('question.detail', question_id=question_id))
+        return redirect('{}#answer_{}'.format(
+            url_for('question.detail', question_id=question_id), answer.id))
 
     return render_template('question/question_detail.html', question=question, form=form)
 
 # 붙여넣기 함.
 
 
-@bp.route('/modify/<int:answer_id>', methods=('GET', 'POST'))
-@login_required
+@ bp.route('/modify/<int:answer_id>', methods=('GET', 'POST'))
+@ login_required
 def modify(answer_id):
     answer = Answer.query.get_or_404(answer_id)
     if g.user != answer.user:
@@ -50,8 +51,8 @@ def modify(answer_id):
     return render_template('answer/answer_form.html', answer=answer, form=form)
 
 
-@bp.route('/delete/<int:answer_id>')
-@login_required
+@ bp.route('/delete/<int:answer_id>')
+@ login_required
 def delete(answer_id):
     answer = Answer.query.get_or_404(answer_id)
     question_id = answer.question.id
