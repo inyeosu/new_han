@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flaskext.markdown import Markdown
 from sqlalchemy import MetaData
 
-import config
 # ----------- SQLite 데이터 베이스는 ORM 사용할 때 몇가지 문제점이 있고/
 # 이를 해결하기 위해 아래와 같이 처리 함.
 
@@ -21,7 +20,7 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(config)
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # ORM
     db.init_app(app)
