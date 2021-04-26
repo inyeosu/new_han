@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.markdown import Markdown
@@ -16,6 +16,14 @@ naming_convention = {
 }
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
+
+
+def server_error(e):
+    return render_template('500.html'), 500
+
+
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 def create_app():
@@ -47,5 +55,9 @@ def create_app():
 
     # 마크다운
     Markdown(app, extensions=['nl2br', 'fenced_code'])
+
+    # 오류 페이지
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, server_error)
 
     return app
